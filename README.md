@@ -9,11 +9,15 @@ db서버 : MySQL
 
 <details>
 <summary>🔍 웹서버 구축하기 (클릭하면 열립니다)</summary>
+---
+   
 개요 : web 서버 구축을 소스 컴파일로 설치하면서 구조를 파악하고 학습한다.
 
+---
+
 1. 필수 의존성 패키지 설치
-   1.1 sudo apt update -y : 패키지를 최신으로 업데이트한다.
-   1.2 컴파일 기본 도구 및 아파치 필수 의존성 패키지 설치
+   1) sudo apt update -y : 패키지를 최신으로 업데이트한다.
+   2) 컴파일 기본 도구 및 아파치 필수 의존성 패키지 설치
       ```bash
       sudo apt install -y build-essential \
         libapr1-dev \
@@ -22,27 +26,28 @@ db서버 : MySQL
         libssl-dev \
         expat \
         libexpat1-dev
-      ```
-    install -y build-essential : 소스 컴파일할 때 필요한 `gcc`, `g++`, `make` 등을 한 번에 설치한다.
-    libapr1-dev, libarprutil1-dev : 아파치 서버가 OS에 상관없이 잘 돌아가도록 돕는 핵심 라이브러리(APR)의 개발자 패키지
-    libpcre3-dev : 정규표현식 처리를 위한 라이브러리
-    libssl-dev : HTTPS(SSL/TLS) 보안 설정을 적용하기 위해 사용
+       ```
+    3) 패키지 설명  
+       install -y build-essential : 소스 컴파일할 때 필요한 `gcc`, `g++`, `make` 등을 한 번에 설치한다.
+       libapr1-dev, libarprutil1-dev : 아파치 서버가 OS에 상관없이 잘 돌아가도록 돕는 핵심 라이브러리(APR)의 개발자 패키지
+       libpcre3-dev : 정규표현식 처리를 위한 라이브러리
+       libssl-dev : HTTPS(SSL/TLS) 보안 설정을 적용하기 위해 사용
 
 2. 소스 파일 다운로드 및 압축해제 (관례적으로 사용하는 /usr/local/src 폴더에 다운로드)
-   2.1 아파치 소스 코드 다운로드 : sudo wget https://dlcdn.apache.org/httpd/httpd-2.4.68.tar.bz2
-   2.2 압축 해제 : sudo tar -xvf httpd-2.4.68
+   1) 아파치 소스 코드 다운로드 : sudo wget https://dlcdn.apache.org/httpd/httpd-2.4.68.tar.bz2
+   2) 압축 해제 : sudo tar -xvf httpd-2.4.68
 
 3. 아파치 컴파일 및 설치, 위치 : /usr/local/src/httpd-2.4.68
-   3.1 configure을 통해 설계도를 만든다.
-     ```bash
-     sudo ./configure --prefix=/usr/local/apache2 \
-       --enable-modules=most \
-       --enable-mods-shared=all \
-       --enable-so \
-       --with-ssl
-     ```
-   3.2 sudo make : 설계도 대로 조립을 한다.
-   3.3 sudo make install : 조립한 것을 배치한다.
+   1)  configure을 통해 설계도를 만든다.
+        ```bash
+           sudo ./configure --prefix=/usr/local/apache2 \
+              --enable-modules=most \
+              --enable-mods-shared=all \
+              --enable-so \
+              --with-ssl
+        ```
+    2) sudo make : 설계도 대로 조립을 한다.
+    3) sudo make install : 조립한 것을 배치한다.
 
 ---
 
@@ -210,9 +215,6 @@ db서버 : MySQL
 4.7  로그 로테이션 (Log Rotation) 설정 (서버 장애 방지)
 4.8  로그 로테이션 (Log Rotation) 설정 (서버 장애 방지)
 4.9  멀티 프로세싱 모듈(MPM) 최적화 (성공적인 WAS 연동을 위한 발판)
-
-
-
 
 💡 트러블슈팅: configtest 실행 시 socache_shmcb 에러가 나는 경우
 - 에러 메시지: `SSLSessionCache: 'shmcb' session cache not supported...`
