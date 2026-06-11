@@ -59,27 +59,21 @@ db서버 : MySQL
 - root 권한이 아닌 보안이 취약한 전용 유저(예: apache)를 생성하여 아파치 프로세스 구동 권한 부여
 - 아파치 서버가 해킹당하더라도 공격자가 OS 시스템에 직접 로그인하지 못하도록 설정
 
-  1) apache 시스템 그룹 생성 
-    sudo groupadd -r apache
+  1) apache 시스템 그룹 생성 : sudo groupadd -r apache
 
-  2) 로그인이 불가능한 apache 시스템 유저를 생성 (-r : 시스템 계정, -g: 그룹지정, -s : 셸 제한)
-    sudo useradd -r -g apache -s /usr/sbin/nologin -d /usr/local/apache2 apache
+  2) 로그인이 불가능한 apache 시스템 유저를 생성 (-r : 시스템 계정, -g: 그룹지정, -s : 셸 제한) : sudo useradd -r -g apache -s /usr/sbin/nologin -d /usr/local/apache2 apache
     
-    1) 유저가 속한 그룹 확인
-      id apache
-    2) 유저의 홈 디렉토리 및 비로그인 셸 설정 확인
-      grep apache /etc/passwd
-    3) 그룹 생성 확인
-      grep apache /etc/group
-    4) 로그인 막혔는지 테스트
-      sudo su - apache
+    1) 유저가 속한 그룹 확인 : id apache
+    2) 유저의 홈 디렉토리 및 비로그인 셸 설정 확인 : grep apache /etc/passwd
+    3) 그룹 생성 확인 : grep apache /etc/group
+    4) 로그인 막혔는지 테스트 : sudo su - apache
   
   3) 아파치 설정 파일(httpd.conf) 수정 (/usr/local/apache2/conf/httpd.conf)
-    User apache
-    Group apache
-    
-  4) 아파치 설치 폴더 소유권 변경
-    sudo chown -R apache:apache /usr/local/apache2
+      ```bash
+       User apache
+       Group apache
+      ```
+  5) 아파치 설치 폴더 소유권 변경 : sudo chown -R apache:apache /usr/local/apache2
 
 
 2) systemd 서비스 등록 (자동 시작 설정)
