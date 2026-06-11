@@ -203,16 +203,28 @@ db서버 : MySQL
        sudo systemctl restart httpd
       ```
 
-#### 4.6  아파치 버전 및 OS 정보 숨기기 (보안 고도화)
-#### 4.7  로그 로테이션 (Log Rotation) 설정 (서버 장애 방지)
-#### 4.8  멀티 프로세싱 모듈(MPM) 최적화 (성공적인 WAS 연동을 위한 발판)
+#### 6  아파치 버전 및 OS 정보 숨기기 (보안 고도화)
+   - 아파치 설정 파일에서 ServerTokens, ServerSignature를 수정하거나 추가한다.
+     ```bash
+        # 헤더 정보에서 OS 및 상세 버전 숨기고 Apache만 표시
+         ServerTokens Prod
 
-## 5. 트러블슈팅: configtest 실행 시 socache_shmcb 에러가 나는 경우
-- 에러 메시지: `SSLSessionCache: 'shmcb' session cache not supported...`
-- 해결 방법: `/usr/local/apache2/conf/httpd.conf` 파일에서 아래 모듈의 주석(#)을 제거합니다.
-   ```bash
-     LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
-   ```
+        # 에러 페이지 하단에 서버 정보와 버전 출력 안함
+         ServerSignature Off
+     ```
+#### 7  로그 로테이션 (Log Rotation) 설정 (서버 장애 방지)
+#### 8  멀티 프로세싱 모듈(MPM) 최적화 (성공적인 WAS 연동을 위한 발판)
+#### 9  HTTP 헤더 보안 설정 (OWASP Top 10 대비)
+#### 10 Slowloris(DDoS) 방지 알고리즘 및 타임아웃 조율
+#### 11 디렉토리 리스팅(Directory Listing) 차단
+
+## 5. 트러블슈팅 
+   1) configtest 실행 시 socache_shmcb 에러가 나는 경우
+      - 에러 메시지: `SSLSessionCache: 'shmcb' session cache not supported...`
+      - 해결 방법: `/usr/local/apache2/conf/httpd.conf` 파일에서 아래 모듈의 주석(#)을 제거합니다.
+         ```bash
+           LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+         ```
 </details>
 
 <details>
