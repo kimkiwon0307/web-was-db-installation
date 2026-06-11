@@ -306,7 +306,124 @@ db서버 : MySQL
         
     </VirtualHost>
     ```
+</details>
 
-   
+
+<details>
+<summary>🌐 DB 설치하고 연동하기 (MySQL)</summary>
+
+Web과 WAS는 서비스 아키텍처 이해를 위해 소스 컴파일로 설치해 보았고, DB는 데이터 저장소의 안정적인 운영과 백업/복구 매커니즘 학습에 집중하기 위해 안정적인 패키지 설치로 진행한다.
+
+---
+
+### 1. MySQL 설치
+
+1) apt 업데이트 :
+sudo apt update
+
+2) mysql 설치 :
+sudo apt install -y mysql-server
+
+3) 버전 확인 :
+mysql --version
+
+4) 서비스 확인 :
+sudo systemctl status mysql
+
+5) 부팅 시 자동 시작 :
+sudo systemctl enable mysql
+
+---
+
+### 2. 보안 설정
+
+보안에 취약한 기본 설정들을 실무 가이드에 맞게 강화해 주는 필수 보안 초기화 스크립트이다.
+sudo mysql_secure_installation
+
+[보안 초기화 스크립트 주요 단계]
+1) VALIDATE PASSWORD COMPONENT (비밀번호 복잡도 검사 기능 활성화)
+2) Change the password for root? (root 비밀번호 변경)
+3) Remove anonymous users? (익명 사용자 삭제)
+4) Disallow root login remotely? (root 계정의 원격 접속 차단)
+5) Remove test database and access to it? (test 데이터베이스 삭제)
+6) Reload privilege tables now? (권한 테이블 즉시 적용)
+
+---
+
+### 3. 서비스 DB 생성
+
+MySQL 접속 후 다음 명령어를 실행한다.
+1) DB 생성 :
+CREATE DATABASE shopmall;
+
+2) DB 확인 :
+SHOW DATABASES;
+
+---
+
+### 4. 서비스 계정 생성
+
+* 주의: 실무에서는 보안을 위해 root 계정을 절대 직접 사용하지 않는다.
+
+1) 사용자 생성 :
+CREATE USER 'shopadmin'@'localhost' IDENTIFIED BY 'Password123123!';
+
+2) 권한 부여 :
+GRANT ALL PRIVILEGES ON shopmall.* TO 'shopadmin'@'localhost';
+
+3) 권한 반영 :
+FLUSH PRIVILEGES;
+
+---
+
+### 5. 덤프 파일을 이용한 테이블 생성
+
+1) mysql 덤프 파일을 DB 서버에 옮긴 후 mysql에 적용한다 :
+mysql -u shopadmin -p shopmall < ./Dump.sql
+
+2) mysql에 접속 :
+mysql -u shopadmin -p
+
+3) DB 사용 :
+USE shopmall;
+
+4) Table 조회 :
+SHOW TABLES;
+
+5) 데이터 조회 (검증용 상위 5개) :
+SELECT * FROM 테이블명 LIMIT 5;
+
+---
+
+### 6. 스프링 프로젝트 연결하기
+
+1) ROOT.war 파일을 DB서버에 옮긴다.
+
+2) ROOT.war 파일을 설치한 톰캣 경로에 복사한다 :
+sudo cp ./ROOT.war /opt/tomcat/webapps/
+
+3) webapps 폴더 내부의 소유권을 tomcat 계정으로 변경한다 :
+sudo chown -R tomcat:tomcat /opt/tomcat/webapps/
+
+4) 톰캣 재실행 :
+sudo systemctl restart tomcat
+
+* 배포 메커니즘 참고:
+tomcat의 server.xml 설정을 보면 <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true"> 라는 코드가 있어서 webapps 폴더 밑으로 war파일을 복사하면 자동으로 압축이 풀리며 배포된다.
+
+5) 연동된것 확인
+
+<img width="1491" height="873" alt="image" src="https://github.com/user-attachments/assets/c4ed7139-6f24-4879-9bc0-1077f5502fcb" />
 
 </details>
+
+
+
+</details>
+
+
+
+
+
+
+
