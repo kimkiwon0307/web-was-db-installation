@@ -55,7 +55,7 @@ db서버 : MySQL
 
 컴파일 설치 완료 후, 실제 운영 환경(Production) 수준의 안정성과 보안을 확보하기 위해 진행해야 하는 필수 설정입니다.
 
-1) 웹 서버 전용 보안 계정 생성 (비로그인 설정)
+#### 1) 웹 서버 전용 보안 계정 생성 (비로그인 설정)
 - root 권한이 아닌 보안이 취약한 전용 유저(예: apache)를 생성하여 아파치 프로세스 구동 권한 부여
 - 아파치 서버가 해킹당하더라도 공격자가 OS 시스템에 직접 로그인하지 못하도록 설정
 
@@ -76,7 +76,7 @@ db서버 : MySQL
   5) 아파치 설치 폴더 소유권 변경 : sudo chown -R apache:apache /usr/local/apache2
 
 
-2) systemd 서비스 등록 (자동 시작 설정)
+#### 2) systemd 서비스 등록 (자동 시작 설정)
 - 서버 재부팅 시 아파치가 자동 구동되도록 /etc/systemd/system/httpd.service 등록 및 활성화
   
   1) sudo vi /etc/systemd/system/httpd.service 파일 생성 및 아래 내용 저장
@@ -109,7 +109,7 @@ db서버 : MySQL
        sudo systemctl restart httpd
      ```
 
-3) OS 방화벽(UFW) 포트 개방
+#### 3) OS 방화벽(UFW) 포트 개방
 - 외부 접속을 위한 HTTP(80) 및 HTTPS(443) 포트 허용 설정
   
   1) 방화벽 기본 상태 확인 및 활성화
@@ -123,7 +123,7 @@ db서버 : MySQL
        sudo ufw status verbose
       ```
 
-4) SSL/TLS (HTTPS) 인증서 연동
+#### 4) SSL/TLS (HTTPS) 인증서 연동
 - httpd-ssl.conf 활성화 및 암호화 통신 적용
 - SSL 인증서 직접 생성 및 배치(테스트용 사설 인증서)
 - 오픈소스 보안 도구인 openssl 을 이용하여 웹 서버 암호화 통신에 사용할 사설 인증서 키쌍(공개키, 비밀키)을 직접 생성
@@ -166,7 +166,7 @@ db서버 : MySQL
       ```bash
         openssl s_client -connect localhost:443
       ```
-5) HTTP(80) -> HTTPS(443) 자동 리다이렉트 설정
+#### 5) HTTP(80) -> HTTPS(443) 자동 리다이렉트 설정
 - 사용자가 보안되지 않은 HTTP(80 포트)로 접속하더라도 자동으로 보안 프로토콜인 HTTPS(443 포트)로 전환되도록 가상 호스트(VirtualHost)를 구성합니다.
   
   1) 아파치 리다이렉트 필수 모듈 활성화 (`conf/httpd.conf`)
@@ -198,28 +198,21 @@ db서버 : MySQL
 
   3) 검증 및 프로세스 상태 확인
     설정 반영 후 아파치 문법 검사 및 재시작을 진행하고 리다이렉트 작동 여부와 포트를 검증합니다.
-    ```bash
-    sudo /usr/local/apache2/bin/apachectl configtest
-    sudo systemctl restart httpd
-    ```
-    
-    * **리다이렉트 및 헤더 결과 확인 (301 응답 및 Location 확인)**
-      curl -kI http://localhost
-      curl -kI https://192.168.111.133
-      *(주의: 크롬 브라우저의 강력한 캐싱 기능으로 인해 리다이렉트가 반영 안 되는 것처럼 보일 수 있으니, 테스트 시 크롬 시크릿 창(Ctrl+Shift+N)이나 위 curl 명령어를 사용해 검증합니다.)*
-      
-    * **네트워크 포트 활성화 여부 확인 (443 포트 Listen 상태 확인)**
-      sudo ss -anlp | grep 443
+      ```bash
+       sudo /usr/local/apache2/bin/apachectl configtest
+       sudo systemctl restart httpd
+      ```
 
-4.6  아파치 버전 및 OS 정보 숨기기 (보안 고도화)
-4.7  로그 로테이션 (Log Rotation) 설정 (서버 장애 방지)
-4.8  로그 로테이션 (Log Rotation) 설정 (서버 장애 방지)
-4.9  멀티 프로세싱 모듈(MPM) 최적화 (성공적인 WAS 연동을 위한 발판)
+#### 4.6  아파치 버전 및 OS 정보 숨기기 (보안 고도화)
+#### 4.7  로그 로테이션 (Log Rotation) 설정 (서버 장애 방지)
+#### 4.8  멀티 프로세싱 모듈(MPM) 최적화 (성공적인 WAS 연동을 위한 발판)
 
-💡 트러블슈팅: configtest 실행 시 socache_shmcb 에러가 나는 경우
+## 5. 트러블슈팅: configtest 실행 시 socache_shmcb 에러가 나는 경우
 - 에러 메시지: `SSLSessionCache: 'shmcb' session cache not supported...`
 - 해결 방법: `/usr/local/apache2/conf/httpd.conf` 파일에서 아래 모듈의 주석(#)을 제거합니다.
-  LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+   ```bash
+     LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+   ```
 </details>
 
 <details>
