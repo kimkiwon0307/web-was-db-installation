@@ -244,7 +244,7 @@ db서버 : MySQL
          -C /opt/tomcat : 압축 풀 결과물들을 현재 위치가 아닌 /opt/tomcat 디렉토리로 해라
          --strip-components=1 : 압축 파일 안에 들어있는 가장 상위 폴더는 빼라
       ```   
-    4. 권한 변경
+   4. 권한 변경
        1) 톰캣 폴더의 소유자를 tomcat으로 변경한다.
           ```bash
              sudo chown -R tomcat:tomcat /opt/tomcat : -R : 하위 폴더와 파일까지 전부 tomcat이 전용 계정이므로 권한을 주기위해  바꾼다.
@@ -253,7 +253,7 @@ db서버 : MySQL
           ```bash
              sudo chmod +x /opt/tomcat/bin/
           ```
-    5. 수동 실행 테스트
+   5. 수동 실행 테스트
        ```bash
           실행 : sudo -u tomcat /apt/tomcat/bin/startup.sh
           확인 : ss -tnlp | grep 8080 
@@ -264,7 +264,7 @@ db서버 : MySQL
                   -p는 이 포트를 어떤 프로그램(프로세스)이 쓰고있는지 프로그램 이름과 PID를 보여준다.
                   -n는 포트번호 보여준다.
        ```  
-    6. systemd 서비스 등록
+   6. systemd 서비스 등록
           1. 파일 생성 : sudo vi /etc/systemd/system/tomcat.service
           2. 서비스 등록 : sudo systemctl daemon-reload
           3. 서비스 활성화 : sudo systemctl enable tomcat
