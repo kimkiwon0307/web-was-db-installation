@@ -46,8 +46,8 @@ db서버 : MySQL
               --enable-so \
               --with-ssl
         ```
-    2) sudo make : 설계도 대로 조립을 한다.
-    3) sudo make install : 조립한 것을 배치한다.
+   2) sudo make : 설계도 대로 조립을 한다.
+   3) sudo make install : 조립한 것을 배치한다.
 
 ---
 
