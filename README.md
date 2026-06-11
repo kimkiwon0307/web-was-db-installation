@@ -8,7 +8,7 @@ db서버 : MySQL
 
 
 <details>
-<summary>🔍 웹서버 구축하기 (클릭하면 열립니다)</summary>
+<summary>🌐 웹서버 구축하기 (클릭하면 열립니다)</summary>
 ---
    
 개요 : web 서버 구축을 소스 컴파일로 설치하면서 구조를 파악하고 학습한다.
@@ -219,47 +219,51 @@ db서버 : MySQL
 <summary>🌐 WAS(Tomcat) 서버 구축하기 (소스 컴파일 설치)</summary>
 
    1. Java 설치
-     java -version
-     sudo apt update
-     sudo apt install openjdk-17-jdk -y
-
+      ```bash
+        java -version
+        sudo apt update
+        sudo apt install openjdk-17-jdk -y
+      ```
    2. Tomcat 전용 계정 생성
-      sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat
-      해석
+      ```bash
+         sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat
          useradd : 새로운 사용자 계정을 생성
          -m : 계정을 만들 때 홈 디렉토리도 함께 생성
          -U : 생성하는 사용자명과 동일한 이름의 그룹을 자동으로 함께 생성하고 그 그룹에 포함
          -d /opt/tomcat : 생성할 사용자의 홈 디렉토리 위치를 /apt/tomcat으로 지정
          -s /bin/false : 리눅스 시스템에 로그인 불가
          -tomcat : 최종적으로 생성할 이 계정의 이름 
-
+      ```
    3. Tomcat 다운로드 및 압축해제
-      이동 : cd /tmp : 임시파일 폴더라 나중에 정리하기 편함 
-      폴더 만들기 : sudo mkdir /opt/tomcat
-      다운 : sudo wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.55/bin/apache-tomcat-10.1.55.tar.gz
-      해제 : sudo tar -xzvf apache-tomcat-10.1.55.tar.gz -C /opt/tomcat/ --strip-components=1
-         해석
-            -xzf : x는 해제, z는 .gz 형식으로 압축된 파일 처리 f는 뒤에 나올 압축 파일명을 지정하겠다 v는 풀릴때 목록 보여준다.
-            -C /opt/tomcat : 압축 풀 결과물들을 현재 위치가 아닌 /opt/tomcat 디렉토리로 해라
-            --strip-components=1 : 압축 파일 안에 들어있는 가장 상위 폴더는 빼라
-
+      ```bash
+         이동 : cd /tmp : 임시파일 폴더라 나중에 정리하기 편함 
+         폴더 만들기 : sudo mkdir /opt/tomcat
+         다운 : sudo wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.55/bin/apache-tomcat-10.1.55.tar.gz
+         해제 : sudo tar -xzvf apache-tomcat-10.1.55.tar.gz -C /opt/tomcat/ --strip-components=1      
+         -xzf : x는 해제, z는 .gz 형식으로 압축된 파일 처리 f는 뒤에 나올 압축 파일명을 지정하겠다 v는 풀릴때 목록 보여준다.
+         -C /opt/tomcat : 압축 풀 결과물들을 현재 위치가 아닌 /opt/tomcat 디렉토리로 해라
+         --strip-components=1 : 압축 파일 안에 들어있는 가장 상위 폴더는 빼라
+      ```   
     4. 권한 변경
-       톰캣 폴더의 소유자를 tomcat으로 변경한다.
-       sudo chown -R tomcat:tomcat /opt/tomcat : -R : 하위 폴더와 파일까지 전부 tomcat이 전용 계정이므로 권한을 주기위해  바꾼다.
-
-       톰캣 실행 권한
-       sudo chmod +x /opt/tomcat/bin/
-
+       1) 톰캣 폴더의 소유자를 tomcat으로 변경한다.
+          ```bash
+             sudo chown -R tomcat:tomcat /opt/tomcat : -R : 하위 폴더와 파일까지 전부 tomcat이 전용 계정이므로 권한을 주기위해  바꾼다.
+          ```
+       2) 톰캣 실행 권한
+          ```bash
+             sudo chmod +x /opt/tomcat/bin/
+          ```
     5. 수동 실행 테스트
-       실행 : sudo -u tomcat /apt/tomcat/bin/startup.sh
-       확인 : ss -tnlp | grep 8080 
-          해석
-               -t는 TCP 프로토콜을 사용하는 포트 보여준다. 
-               -u는 UDP 프로토콜을 사용하는 포트 보여준다.
-               -l은 연결을 요청받기 위해 대기 중인 포트만 보여준다.
-               -p는 이 포트를 어떤 프로그램(프로세스)이 쓰고있는지 프로그램 이름과 PID를 보여준다.
-               -n는 포트번호 보여준다.
-
+       ```bash
+          실행 : sudo -u tomcat /apt/tomcat/bin/startup.sh
+          확인 : ss -tnlp | grep 8080 
+             해석
+                  -t는 TCP 프로토콜을 사용하는 포트 보여준다. 
+                  -u는 UDP 프로토콜을 사용하는 포트 보여준다.
+                  -l은 연결을 요청받기 위해 대기 중인 포트만 보여준다.
+                  -p는 이 포트를 어떤 프로그램(프로세스)이 쓰고있는지 프로그램 이름과 PID를 보여준다.
+                  -n는 포트번호 보여준다.
+       ```  
     6. systemd 서비스 등록
           1. 파일 생성 : sudo vi /etc/systemd/system/tomcat.service
           2. 서비스 등록 : sudo systemctl daemon-reload
