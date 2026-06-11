@@ -216,7 +216,7 @@ db서버 : MySQL
 #### 8  멀티 프로세싱 모듈(MPM) 최적화 (성공적인 WAS 연동을 위한 발판)
 #### 9  HTTP 헤더 보안 설정 (OWASP Top 10 대비)
 #### 10 Slowloris(DDoS) 방지 알고리즘 및 타임아웃 조율
-#### 11 디렉토리 리스팅(Directory Listing) 차단
+#### 11 디렉토리 리스팅(Directory Listing) 차단 , 네트워크 커넥션 자원 튜닝(KeepAlive(커넥션 재사용) 최적화):, 서버 트래픽 최적화(정적 리소스 브라우저 캐싱 (mod_expires))
 
 ## 5. 트러블슈팅 
    1) configtest 실행 시 socache_shmcb 에러가 나는 경우
