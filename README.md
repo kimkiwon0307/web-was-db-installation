@@ -26,8 +26,8 @@ db서버 : MySQL
         libssl-dev \
         expat \
         libexpat1-dev
-```
-    3) 패키지 설명  
+      ```
+   3) 패키지 설명  
        1) install -y build-essential : 소스 컴파일할 때 필요한 `gcc`, `g++`, `make` 등을 한 번에 설치한다.
        2) libapr1-dev, libarprutil1-dev : 아파치 서버가 OS에 상관없이 잘 돌아가도록 돕는 핵심 라이브러리(APR)의 개발자 패키지
        3) libpcre3-dev : 정규표현식 처리를 위한 라이브러리
