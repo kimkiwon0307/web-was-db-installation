@@ -97,28 +97,31 @@ db서버 : MySQL
     ```
     
   2) systemd 데몬 리로드 및 서비스 활성화
-    sudo systemctl daemon-reload
-    sudo systemctl enable httpd
-    
-  3) 서비스 제어 명령어
-    sudo systemctl start httpd
-    sudo systemctl stop httpd
-    sudo systemctl status httpd
-    sudo systemctl restart httpd
-
+     ```bash
+      sudo systemctl daemon-reload
+      sudo systemctl enable httpd
+     ```
+  4) 서비스 제어 명령어
+     ```bash
+       sudo systemctl start httpd
+       sudo systemctl stop httpd
+       sudo systemctl status httpd
+       sudo systemctl restart httpd
+     ```
 
 3) OS 방화벽(UFW) 포트 개방
 - 외부 접속을 위한 HTTP(80) 및 HTTPS(443) 포트 허용 설정
   
   1) 방화벽 기본 상태 확인 및 활성화
-    sudo ufw status
-    sudo ufw enable
-    sudo ufw allow 22/tcp
-    sudo ufw allow 80/tcp
-    sudo ufw allow 443/tcp
-    sudo ufw reload
-    sudo ufw status verbose
-  
+      ```bash
+        sudo ufw status
+       sudo ufw enable
+       sudo ufw allow 22/tcp
+       sudo ufw allow 80/tcp
+       sudo ufw allow 443/tcp
+       sudo ufw reload
+       sudo ufw status verbose
+      ```
 
 4) SSL/TLS (HTTPS) 인증서 연동
 - httpd-ssl.conf 활성화 및 암호화 통신 적용
@@ -126,37 +129,43 @@ db서버 : MySQL
 - 오픈소스 보안 도구인 openssl 을 이용하여 웹 서버 암호화 통신에 사용할 사설 인증서 키쌍(공개키, 비밀키)을 직접 생성
   
   1) 아파치 SSL 모듈 및 설정 활성화 (`conf/httpd.conf`)
-    LoadModule ssl_module modules/mod_ssl.so 주석 제거
-    Include conf/extra/httpd-ssl.conf 주석 제거
-    *(주의: httpd-ssl.conf 내부의 기본 <VirtualHost _default_:443> 블록은 아래 vhost 설정과 충돌할 수 있으므로 주석 처리하거나 제거하는 것이 좋습니다.)*
+     ```bash
+       LoadModule ssl_module modules/mod_ssl.so 주석 제거
+       Include conf/extra/httpd-ssl.conf 주석 제거
+     ```
   
   2) SSL 인증서 발급 및 배치
-    실무에서는 인증받은 인증서를 발급받아 사용, 나는 테스트용이므로 openssl을 이용하여 키쌍을 직접 생성한다.
+   - 실무에서는 인증받은 인증서를 발급받아 사용, 나는 테스트용이므로 openssl을 이용하여 키쌍을 직접 생성한다.
     
     1) 인증서 보관 디렉토리 생성 : 
-      sudo mkdir -p /usr/local/apache2/conf/ssl
-      
+       ```bash
+         sudo mkdir -p /usr/local/apache2/conf/ssl
+       ```
     2) OpenSSL 명령어로 1년 유효한 인증서 및 비밀키 생성
       ```bash
       sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout /usr/local/apache2/conf/ssl/server.key \
         -out /usr/local/apache2/conf/ssl/server.crt
       ```
-      * `-keyout` : 생성될 비밀키(Private Key) 경로
-      * `-out` : 생성될 인증서(Certificate) 경로
+       1) `-keyout` : 생성될 비밀키(Private Key) 경로
+       2) `-out` : 생성될 인증서(Certificate) 경로
     
     3) 아파치 설정 검증 및 재시작
-      sudo /usr/local/apache2/bin/apachectl configtest
-      sudo systemctl restart httpd
-
+        ```bash
+         sudo /usr/local/apache2/bin/apachectl configtest
+         sudo systemctl restart httpd
+        ```
   3) HTTPS 연동 확인 방법
      1) 터미널에서 curl 명령어로 확인하기
-      curl -kIv https://localhost
-      * `-k` (인증서 검증 패스), `-I` (헤더 정보만 보기), `-v` (상세 통신 과정 출력)
-    
+      ```bash
+         curl -kIv https://localhost
+      ```
+         - `-k` (인증서 검증 패스), `-I` (헤더 정보만 보기), `-v` (상세 통신 과정 출력)
+
      2) openssl 도구로 SSL 연결 상세 분석
-      openssl s_client -connect localhost:443
-    
+      ```bash
+        openssl s_client -connect localhost:443
+      ```
 5) HTTP(80) -> HTTPS(443) 자동 리다이렉트 설정
 - 사용자가 보안되지 않은 HTTP(80 포트)로 접속하더라도 자동으로 보안 프로토콜인 HTTPS(443 포트)로 전환되도록 가상 호스트(VirtualHost)를 구성합니다.
   
