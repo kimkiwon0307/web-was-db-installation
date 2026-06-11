@@ -277,16 +277,13 @@ db서버 : MySQL
 <details>
 <summary>🌐 Web Was 연동하기</summary>
 
-1) httpd.conf에서 프록시 모듈 활성화 :
-sudo nano /usr/local/apache2/conf/httpd.conf
-LoadModule proxy_module modules/mod_proxy.so
-LoadModule proxy_http_module modules/mod_proxy_http.so
+1) httpd.conf에서 프록시 모듈 활성화 (경로: sudo nano /usr/local/apache2/conf/httpd.conf)
+      LoadModule proxy_module modules/mod_proxy.so
+      LoadModule proxy_http_module modules/mod_proxy_http.so
 
-2) 아파치 설정 파일 문법 검사 :
-sudo /usr/local/apache2/bin/apachectl configtest
+2) 아파치 설정 파일 문법 검사 : sudo /usr/local/apache2/bin/apachectl configtest
 
-3) 가상 호스트 및 리버스 프록시 설정 :
-sudo nano /usr/local/apache2/conf/extra/httpd-vhosts.conf
+3) 가상 호스트 및 리버스 프록시 설정 : sudo nano /usr/local/apache2/conf/extra/httpd-vhosts.conf
 
 [httpd-vhosts.conf 내부 설정 내용]
 
