@@ -7,7 +7,8 @@ was서버 : tomcat
 db서버 : MySQL
 
 
-web서버 구축하기 (소스 컴파일 설치) 
+<details>
+<summary>🔍 웹서버 구축하기 (클릭하면 열립니다)</summary>
 개요 : web 서버 구축을 소스 컴파일로 설치하면서 구조를 파악하고 학습한다.
 
 1. 필수 의존성 패키지 설치
@@ -217,3 +218,4 @@ web서버 구축하기 (소스 컴파일 설치)
 - 에러 메시지: `SSLSessionCache: 'shmcb' session cache not supported...`
 - 해결 방법: `/usr/local/apache2/conf/httpd.conf` 파일에서 아래 모듈의 주석(#)을 제거합니다.
   LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+</details>
