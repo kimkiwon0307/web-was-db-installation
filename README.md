@@ -15,7 +15,7 @@ db서버 : MySQL
 
 ---
 
- 1. 필수 의존성 패키지 설치
+## 1. 필수 의존성 패키지 설치
    1) sudo apt update -y : 패키지를 최신으로 업데이트한다.
    2) 컴파일 기본 도구 및 아파치 필수 의존성 패키지 설치
       ```bash
@@ -26,7 +26,7 @@ db서버 : MySQL
         libssl-dev \
         expat \
         libexpat1-dev
-       ```
+```
     3) 패키지 설명  
        1) install -y build-essential : 소스 컴파일할 때 필요한 `gcc`, `g++`, `make` 등을 한 번에 설치한다.
        2) libapr1-dev, libarprutil1-dev : 아파치 서버가 OS에 상관없이 잘 돌아가도록 돕는 핵심 라이브러리(APR)의 개발자 패키지
