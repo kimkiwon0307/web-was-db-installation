@@ -292,26 +292,26 @@ sudo nano /usr/local/apache2/conf/extra/httpd-vhosts.conf
 
 [httpd-vhosts.conf 내부 설정 내용]
 
-# 80 포트 요청 -> 443 포트로 자동 리다이렉트
-<VirtualHost *:80>
-    ServerName localhost
-    Redirect permanent / https://localhost/
-</VirtualHost>
+    # 80 포트 요청 -> 443 포트로 자동 리다이렉트
+    <VirtualHost *:80>
+        ServerName localhost
+        Redirect permanent / https://localhost/
+    </VirtualHost>
 
-# 443 포트 요청 -> SSL 인증서 매핑 및 웹 서비스 제공
-<VirtualHost *:443>
-    ServerName localhost
-    DocumentRoot "/usr/local/apache2/htdocs"
+    # 443 포트 요청 -> SSL 인증서 매핑 및 웹 서비스 제공
+    <VirtualHost *:443>
+        ServerName localhost
+        DocumentRoot "/usr/local/apache2/htdocs"
 
-    SSLEngine on
-    SSLCertificateFile "/usr/local/apache2/conf/ssl/server.crt"
-    SSLCertificateKeyFile "/usr/local/apache2/conf/ssl/server.key"
+        SSLEngine on
+        SSLCertificateFile "/usr/local/apache2/conf/ssl/server.crt"
+        SSLCertificateKeyFile "/usr/local/apache2/conf/ssl/server.key"
 
-    # 리버스 프록시 설정 추가
-    ProxyPreserveHost On
-    ProxyPass / http://localhost:8080/
-    ProxyPassReverse / http://localhost:8080/
-</VirtualHost>
+        # 리버스 프록시 설정 추가
+        ProxyPreserveHost On
+        ProxyPass / http://localhost:8080/
+        ProxyPassReverse / http://localhost:8080/
+    </VirtualHost>
 
 </details>
 
