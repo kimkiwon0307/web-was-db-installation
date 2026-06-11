@@ -275,37 +275,44 @@ db서버 : MySQL
 </details>
 
 <details>
-<summary>🌐 Web Was 연동하기 </summary>
-   1. sudo nano /usr/local/apache2/conf/httpd.conf 에서 모듈 열기
-      LoadModule proxy_module modules/mod_proxy.so
-      LoadModule proxy_http_module modules/mod_proxy_http.so
-   2. sudo /usr/local/apache2/bin/apachectl configtest : 문법 검사
-   3. sudo nano /usr/local/apache2/conf/extra/httpd-vhosts.conf 에서 리버스 프록시 설정을 한다.
+<summary>🌐 Web Was 연동하기</summary>
 
-            ```apache
-    # 80 포트 요청 -> 443 포트로 자동 리다이렉트
-    <VirtualHost *:80>
-        ServerName localhost
-        Redirect permanent / https://localhost/
-    </VirtualHost>
+1) httpd.conf에서 프록시 모듈 활성화 :
+sudo nano /usr/local/apache2/conf/httpd.conf
 
-    # 443 포트 요청 -> SSL 인증서 매핑 및 웹 서비스 제공
-    <VirtualHost *:443>
-        ServerName localhost
-        DocumentRoot "/usr/local/apache2/htdocs"
-    
-        SSLEngine on
-        SSLCertificateFile "/usr/local/apache2/conf/ssl/server.crt"
-        SSLCertificateKeyFile "/usr/local/apache2/conf/ssl/server.key"
+[설정 파일 내부 수정 사항 - 주석(#) 해제]
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
 
-         #리버스 프록시 설정 추가
-          ProxyPreserveHost On
+2) 아파치 설정 파일 문법 검사 :
+sudo /usr/local/apache2/bin/apachectl configtest
 
-          ProxyPass / http://localhost:8080/
-          ProxyPassReverse / http://localhost:8080/
-        
-    </VirtualHost>
-    ```
+3) 가상 호스트 및 리버스 프록시 설정 :
+sudo nano /usr/local/apache2/conf/extra/httpd-vhosts.conf
+
+[httpd-vhosts.conf 내부 설정 내용]
+
+# 80 포트 요청 -> 443 포트로 자동 리다이렉트
+<VirtualHost *:80>
+    ServerName localhost
+    Redirect permanent / https://localhost/
+</VirtualHost>
+
+# 443 포트 요청 -> SSL 인증서 매핑 및 웹 서비스 제공
+<VirtualHost *:443>
+    ServerName localhost
+    DocumentRoot "/usr/local/apache2/htdocs"
+
+    SSLEngine on
+    SSLCertificateFile "/usr/local/apache2/conf/ssl/server.crt"
+    SSLCertificateKeyFile "/usr/local/apache2/conf/ssl/server.key"
+
+    # 리버스 프록시 설정 추가
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:8080/
+    ProxyPassReverse / http://localhost:8080/
+</VirtualHost>
+
 </details>
 
 
