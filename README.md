@@ -265,11 +265,12 @@ db서버 : MySQL
                   -n는 포트번호 보여준다.
        ```  
    6. systemd 서비스 등록
+      ```bash
           1. 파일 생성 : sudo vi /etc/systemd/system/tomcat.service
           2. 서비스 등록 : sudo systemctl daemon-reload
           3. 서비스 활성화 : sudo systemctl enable tomcat
           4. 서비스 시작 : sudo systemctl start tomcat
-       
+      ```
 
 </details>
 
