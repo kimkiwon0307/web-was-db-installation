@@ -279,8 +279,6 @@ db서버 : MySQL
 
 1) httpd.conf에서 프록시 모듈 활성화 :
 sudo nano /usr/local/apache2/conf/httpd.conf
-
-[설정 파일 내부 수정 사항 - 주석(#) 해제]
 LoadModule proxy_module modules/mod_proxy.so
 LoadModule proxy_http_module modules/mod_proxy_http.so
 
