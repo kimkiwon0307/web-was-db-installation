@@ -4,7 +4,7 @@
 
 web서버 : apache httpd
 was서버 : tomcat 
-db서버 : MySQL
+db서버 : MySQL 
 
 
 <details>
